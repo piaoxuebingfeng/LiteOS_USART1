@@ -67,6 +67,12 @@ VOID task2(void)
 			memset(USART_RX_BUF,0,sizeof(USART_RX_BUF));
 			USART_RX_STA=0;
 		}
+		if(USART2_RX_STA)
+		{
+			USART_printf(USART2,"%s\r\n",USART2_RX_BUF);
+			memset(USART2_RX_BUF,0,sizeof(USART2_RX_BUF));
+			USART2_RX_STA=0;
+		}
 		uwRet = LOS_TaskDelay(10);
 		if(uwRet !=LOS_OK)
 		return;
@@ -96,9 +102,9 @@ UINT32 osAppInit(void)
 	delay_init();
 	LED_Init();
 	uart_init(9600);
-	
+	uart2_init(9600);
 	LOS_HwiCreate(37,0,0,USART1_IRQHandler,NULL);
-	
+	LOS_HwiCreate(38,0,0,USART2_IRQHandler,NULL);
 	USART_printf(USART1,"\r\n");
 	USART_printf(USART1,"hello liteos\r\n");
 	//Example_TskCaseEntry();
